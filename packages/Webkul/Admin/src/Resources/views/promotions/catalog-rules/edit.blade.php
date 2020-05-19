@@ -56,11 +56,11 @@
 
                                 <div class="control-group">
                                     <label for="status">{{ __('admin::app.promotions.catalog-rules.status') }}</label>
-                                    <span class="checkbox">
+                                    
+                                    <label class="switch">
                                         <input type="checkbox" id="status" name="status" value="{{ $catalogRule->status }}" {{ $catalogRule->status ? 'checked' : '' }}>
-                                        <label class="checkbox-view" for="status"></label>
-                                        {{ __('admin::app.promotions.catalog-rules.is-active') }}
-                                    </span>
+                                        <span class="slider round"></span>
+                                    </label>
                                 </div>
 
                                 <div class="control-group" :class="[errors.has('channels[]') ? 'has-error' : '']">
@@ -350,7 +350,7 @@
 
                     attribute_type_indexes: {
                         'product': 0
-                    }, 
+                    },
 
                     condition_operators: {
                         'price': [{
@@ -516,7 +516,9 @@
                     if (matchedAttribute[0]['type'] == 'multiselect' || matchedAttribute[0]['type'] == 'checkbox') {
                         this.condition.operator = '{}';
 
-                        this.condition.value = this.condition.value == '' && this.condition.value != undefined ? [] : this.condition.value;
+                        this.condition.value = this.condition.value == '' && this.condition.value != undefined
+                                ? []
+                                : Array.isArray(this.condition.value) ? this.condition.value : [];
                     }
 
                     return matchedAttribute[0];

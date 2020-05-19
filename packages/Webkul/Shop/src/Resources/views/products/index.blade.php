@@ -1,12 +1,19 @@
 @extends('shop::layouts.master')
 
 @section('page_title')
-    {{ $category->meta_title ?? $category->name }}
+    {{ trim($category->meta_title) != "" ? $category->meta_title : $category->name }}
 @stop
 
 @section('seo')
-    <meta name="description" content="{{ $category->meta_description }}"/>
+    <meta name="description" content="{{ trim($category->meta_description) != "" ? $category->meta_description : \Illuminate\Support\Str::limit(strip_tags($category->description), 120, '') }}"/>
+
     <meta name="keywords" content="{{ $category->meta_keywords }}"/>
+
+    @if (core()->getConfigData('catalog.rich_snippets.categories.enable'))
+        <script type="application/ld+json">
+            {!! app('Webkul\Product\Helpers\SEO')->getCategoryJsonLd($category) !!}
+        </script>
+    @endif
 @stop
 
 @section('content-wrapper')

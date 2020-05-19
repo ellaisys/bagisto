@@ -6,38 +6,30 @@ use Illuminate\Container\Container as App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Webkul\Core\Eloquent\Repository;
-use Webkul\Core\Models\CoreConfig;
 use Webkul\Sales\Contracts\Order;
 use Webkul\Sales\Models\Order as OrderModel;
 
-/**
- * Order Repository
- *
- * @author    Jitendra Singh <jitendra@webkul.com>
- * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
- */
 class OrderRepository extends Repository
 {
     /**
      * OrderItemRepository object
      *
-     * @var Object
+     * @var \Webkul\Sales\Repositories\OrderItemRepository
      */
     protected $orderItemRepository;
 
     /**
      * DownloadableLinkPurchasedRepository object
      *
-     * @var Object
+     * @var \Webkul\Sales\Repositories\DownloadableLinkPurchasedRepository
      */
     protected $downloadableLinkPurchasedRepository;
 
     /**
      * Create a new repository instance.
      *
-     * @param Webkul\Sales\Repositories\OrderItemRepository                 $orderItemRepository
-     * @param Webkul\Sales\Repositories\DownloadableLinkPurchasedRepository $downloadableLinkPurchasedRepository
-     *
+     * @param  \Webkul\Sales\Repositories\OrderItemRepository  $orderItemRepository
+     * @param  \Webkul\Sales\Repositories\DownloadableLinkPurchasedRepository  $downloadableLinkPurchasedRepository
      * @return void
      */
     public function __construct(
@@ -55,25 +47,23 @@ class OrderRepository extends Repository
     /**
      * Specify Model class name
      *
-     * @return Mixed
+     * @return string
      */
-
     public function model()
     {
         return Order::class;
     }
 
     /**
-     * @param array $data
-     *
-     * @return mixed
+     * @param  array  $data
+     * @return \Webkul\Sales\Contracts\Order
      */
     public function create(array $data)
     {
         DB::beginTransaction();
 
         try {
-            Event::fire('checkout.order.save.before', $data);
+            Event::dispatch('checkout.order.save.before', $data);
 
             if (isset($data['customer']) && $data['customer']) {
                 $data['customer_id'] = $data['customer']->id;
@@ -103,7 +93,7 @@ class OrderRepository extends Repository
             $order->addresses()->create($data['billing_address']);
 
             foreach ($data['items'] as $item) {
-                Event::fire('checkout.order.orderitem.save.before', $data);
+                Event::dispatch('checkout.order.orderitem.save.before', $data);
 
                 $orderItem = $this->orderItemRepository->create(array_merge($item, ['order_id' => $order->id]));
 
@@ -117,10 +107,10 @@ class OrderRepository extends Repository
 
                 $this->downloadableLinkPurchasedRepository->saveLinks($orderItem, 'available');
 
-                Event::fire('checkout.order.orderitem.save.after', $data);
+                Event::dispatch('checkout.order.orderitem.save.after', $data);
             }
 
-            Event::fire('checkout.order.save.after', $order);
+            Event::dispatch('checkout.order.save.after', $order);
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -133,9 +123,8 @@ class OrderRepository extends Repository
     }
 
     /**
-     * @param int $orderId
-     *
-     * @return mixed
+     * @param  int  $orderId
+     * @return \Webkul\Sales\Contracts\Order
      */
     public function cancel($orderId)
     {
@@ -145,7 +134,7 @@ class OrderRepository extends Repository
             return false;
         }
 
-        Event::fire('sales.order.cancel.before', $order);
+        Event::dispatch('sales.order.cancel.before', $order);
 
         foreach ($order->items as $item) {
             if (! $item->qty_to_cancel) {
@@ -186,32 +175,30 @@ class OrderRepository extends Repository
 
         $this->updateOrderStatus($order);
 
-        Event::fire('sales.order.cancel.after', $order);
+        Event::dispatch('sales.order.cancel.after', $order);
 
         return true;
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function generateIncrementId()
     {
-        $config = new CoreConfig();
-
-        foreach ([  'Prefix' => 'prefix',
-                    'Length' => 'length',
-                    'Suffix' => 'suffix', ] as
+        foreach ([  'Prefix'   => 'prefix',
+                    'Length'   => 'length',
+                    'Suffix'   => 'suffix', ] as
                     $varSuffix => $confKey)
-                {
-                    $var = "invoiceNumber{$varSuffix}";
-                    $$var = $config->where('code', '=', "sales.orderSettings.order_number.order_number_{$confKey}")->first() ?: false;
-                }
+        {
+            $var = "invoiceNumber{$varSuffix}";
+            $$var = core()->getConfigData('sales.orderSettings.order_number.order_number_'.$confKey) ?: false;
+        }
 
         $lastOrder = $this->model->orderBy('id', 'desc')->limit(1)->first();
         $lastId = $lastOrder ? $lastOrder->id : 0;
 
         if ($invoiceNumberLength && ($invoiceNumberPrefix || $invoiceNumberSuffix)) {
-            $invoiceNumber = ($invoiceNumberPrefix->value) . sprintf("%0{$invoiceNumberLength->value}d", 0) . ($lastId + 1) . ($invoiceNumberSuffix->value);
+            $invoiceNumber = ($invoiceNumberPrefix) . sprintf("%0{$invoiceNumberLength}d", 0) . ($lastId + 1) . ($invoiceNumberSuffix);
         } else {
             $invoiceNumber = $lastId + 1;
         }
@@ -220,8 +207,7 @@ class OrderRepository extends Repository
     }
 
     /**
-     * @param mixed $order
-     *
+     * @param  \Webkul\Sales\Contracts\Order  $order
      * @return void
      */
     public function isInCompletedState($order)
@@ -252,8 +238,7 @@ class OrderRepository extends Repository
     }
 
     /**
-     * @param mixed $order
-     *
+     * @param  \Webkul\Sales\Contracts\Order  $order
      * @return void
      */
     public function isInCanceledState($order)
@@ -287,8 +272,7 @@ class OrderRepository extends Repository
     }
 
     /**
-     * @param mixed $order
-     *
+     * @param  \Webkul\Sales\Contracts\Order  $order
      * @return void
      */
     public function updateOrderStatus($order)
@@ -310,8 +294,7 @@ class OrderRepository extends Repository
     }
 
     /**
-     * @param mixed $order
-     *
+     * @param  \Webkul\Sales\Contracts\Order  $order
      * @return mixed
      */
     public function collectTotals($order)

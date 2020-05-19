@@ -3,17 +3,8 @@
 namespace Webkul\Admin\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Webkul\Admin\Providers\EventServiceProvider;
-use Illuminate\Contracts\Debug\ExceptionHandler;
-use Webkul\Admin\Exceptions\Handler;
 use Webkul\Core\Tree;
 
-/**
- * Admin service provider
- *
- * @author    Jitendra Singh <jitendra@webkul.com>
- * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
- */
 class AdminServiceProvider extends ServiceProvider
 {
     /**
@@ -38,11 +29,6 @@ class AdminServiceProvider extends ServiceProvider
         $this->registerACL();
 
         $this->app->register(EventServiceProvider::class);
-
-        $this->app->bind(
-            ExceptionHandler::class,
-            Handler::class
-        );
     }
 
     /**
@@ -102,7 +88,7 @@ class AdminServiceProvider extends ServiceProvider
         view()->composer(['admin::users.roles.create', 'admin::users.roles.edit'], function ($view) {
             $view->with('acl', $this->createACL());
         });
-        
+
         view()->composer(['admin::catalog.products.create'], function ($view) {
             $items = array();
 
@@ -139,8 +125,9 @@ class AdminServiceProvider extends ServiceProvider
     {
         static $tree;
 
-        if ($tree)
+        if ($tree) {
             return $tree;
+        }
 
         $tree = Tree::create();
 

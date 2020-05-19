@@ -34,7 +34,7 @@
                         </li>
 
                         <li class="mb-15">
-                            @{{ addresses.country }}.
+                            @{{ addresses.country }}  @{{ addresses.postcode }}
                         </li>
 
                         <li>
@@ -93,6 +93,18 @@
             @include('shop::checkout.onepage.customer-checkout')
         @endif
 
+        <div class="control-group" :class="[errors.has('address-form.billing[company_name]') ? 'has-error' : '']">
+            <label for="billing[company_name]">
+                {{ __('shop::app.checkout.onepage.company-name') }}
+            </label>
+
+            <input type="text" class="control" id="billing[company_name]" name="billing[company_name]" v-model="address.billing.company_name" data-vv-as="&quot;{{ __('shop::app.checkout.onepage.company-name') }}&quot;"/>
+
+            <span class="control-error" v-if="errors.has('address-form.billing[company_name]')">
+                @{{ errors.first('address-form.billing[company_name]') }}
+            </span>
+        </div>
+
         <div class="control-group" :class="[errors.has('address-form.billing[first_name]') ? 'has-error' : '']">
             <label for="billing[first_name]" class="required">
                 {{ __('shop::app.checkout.onepage.first-name') }}
@@ -149,6 +161,26 @@
             </span>
         </div>
 
+        <div class="control-group" :class="[errors.has('address-form.billing[country]') ? 'has-error' : '']">
+            <label for="billing[country]" class="required">
+                {{ __('shop::app.checkout.onepage.country') }}
+            </label>
+
+            <select type="text" v-validate="'required'" class="control" id="billing[country]" name="billing[country]" v-model="address.billing.country" data-vv-as="&quot;{{ __('shop::app.checkout.onepage.country') }}&quot;">
+                <option value=""></option>
+
+                @foreach (core()->countries() as $country)
+
+                    <option value="{{ $country->code }}">{{ $country->name }}</option>
+
+                @endforeach
+            </select>
+
+            <span class="control-error" v-if="errors.has('address-form.billing[country]')">
+                @{{ errors.first('address-form.billing[country]') }}
+            </span>
+        </div>
+
         <div class="control-group" :class="[errors.has('address-form.billing[state]') ? 'has-error' : '']">
             <label for="billing[state]" class="required">
                 {{ __('shop::app.checkout.onepage.state') }}
@@ -180,26 +212,6 @@
 
             <span class="control-error" v-if="errors.has('address-form.billing[postcode]')">
                 @{{ errors.first('address-form.billing[postcode]') }}
-            </span>
-        </div>
-
-        <div class="control-group" :class="[errors.has('address-form.billing[country]') ? 'has-error' : '']">
-            <label for="billing[country]" class="required">
-                {{ __('shop::app.checkout.onepage.country') }}
-            </label>
-
-            <select type="text" v-validate="'required'" class="control" id="billing[country]" name="billing[country]" v-model="address.billing.country" data-vv-as="&quot;{{ __('shop::app.checkout.onepage.country') }}&quot;">
-                <option value=""></option>
-
-                @foreach (core()->countries() as $country)
-
-                    <option value="{{ $country->code }}">{{ $country->name }}</option>
-
-                @endforeach
-            </select>
-
-            <span class="control-error" v-if="errors.has('address-form.billing[country]')">
-                @{{ errors.first('address-form.billing[country]') }}
             </span>
         </div>
 
@@ -274,7 +286,7 @@
                             </li>
 
                             <li class="mb-15">
-                                @{{ addresses.country }}.
+                                @{{ addresses.country }} @{{ addresses.postcode }}
                             </li>
 
                             <li>
@@ -374,6 +386,24 @@
                 </span>
             </div>
 
+            <div class="control-group" :class="[errors.has('address-form.shipping[country]') ? 'has-error' : '']">
+                <label for="shipping[country]" class="required">
+                    {{ __('shop::app.checkout.onepage.country') }}
+                </label>
+
+                <select type="text" v-validate="'required'" class="control" id="shipping[country]" name="shipping[country]" v-model="address.shipping.country" data-vv-as="&quot;{{ __('shop::app.checkout.onepage.country') }}&quot;">
+                    <option value=""></option>
+
+                    @foreach (core()->countries() as $country)
+                        <option value="{{ $country->code }}">{{ $country->name }}</option>
+                    @endforeach
+                </select>
+
+                <span class="control-error" v-if="errors.has('address-form.shipping[country]')">
+                    @{{ errors.first('address-form.shipping[country]') }}
+                </span>
+            </div>
+
             <div class="control-group" :class="[errors.has('address-form.shipping[state]') ? 'has-error' : '']">
                 <label for="shipping[state]" class="required">
                     {{ __('shop::app.checkout.onepage.state') }}
@@ -406,24 +436,6 @@
 
                 <span class="control-error" v-if="errors.has('address-form.shipping[postcode]')">
                     @{{ errors.first('address-form.shipping[postcode]') }}
-                </span>
-            </div>
-
-            <div class="control-group" :class="[errors.has('address-form.shipping[country]') ? 'has-error' : '']">
-                <label for="shipping[country]" class="required">
-                    {{ __('shop::app.checkout.onepage.country') }}
-                </label>
-
-                <select type="text" v-validate="'required'" class="control" id="shipping[country]" name="shipping[country]" v-model="address.shipping.country" data-vv-as="&quot;{{ __('shop::app.checkout.onepage.country') }}&quot;">
-                    <option value=""></option>
-
-                    @foreach (core()->countries() as $country)
-                        <option value="{{ $country->code }}">{{ $country->name }}</option>
-                    @endforeach
-                </select>
-
-                <span class="control-error" v-if="errors.has('address-form.shipping[country]')">
-                    @{{ errors.first('address-form.shipping[country]') }}
                 </span>
             </div>
 

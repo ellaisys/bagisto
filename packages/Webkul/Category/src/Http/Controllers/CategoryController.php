@@ -4,15 +4,8 @@ namespace Webkul\Category\Http\Controllers;
 
 use Illuminate\Support\Facades\Event;
 use Webkul\Category\Repositories\CategoryRepository;
-use Webkul\Category\Models\CategoryTranslation;
 use Webkul\Attribute\Repositories\AttributeRepository;
 
-/**
- * Catalog category controller
- *
- * @author    Jitendra Singh <jitendra@webkul.com>
- * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
- */
 class CategoryController extends Controller
 {
     /**
@@ -25,22 +18,22 @@ class CategoryController extends Controller
     /**
      * CategoryRepository object
      *
-     * @var Object
+     * @var \Webkul\Category\Repositories\CategoryRepository
      */
     protected $categoryRepository;
 
     /**
      * AttributeRepository object
      *
-     * @var Object
+     * @var \Webkul\Attribute\Repositories\AttributeRepository
      */
     protected $attributeRepository;
 
     /**
      * Create a new controller instance.
      *
-     * @param  \Webkul\Category\Repositories\CategoryRepository   $categoryRepository
-     * @param  \Webkul\Attribute\Repositories\AttributeRepository $attributeRepository
+     * @param  \Webkul\Category\Repositories\CategoryRepository  $categoryRepository
+     * @param  \Webkul\Attribute\Repositories\AttributeRepository  $attributeRepository
      * @return void
      */
     public function __construct(
@@ -87,23 +80,11 @@ class CategoryController extends Controller
     public function store()
     {
         $this->validate(request(), [
-            'slug' => ['required', 'unique:category_translations,slug', new \Webkul\Core\Contracts\Validations\Slug],
-            'name' => 'required',
-            'image.*' => 'mimes:jpeg,jpg,bmp,png',
-            'description' => 'required_if:display_mode,==,description_only,products_and_description'
+            'slug'        => ['required', 'unique:category_translations,slug', new \Webkul\Core\Contracts\Validations\Slug],
+            'name'        => 'required',
+            'image.*'     => 'mimes:jpeg,jpg,bmp,png',
+            'description' => 'required_if:display_mode,==,description_only,products_and_description',
         ]);
-
-        if (strtolower(request()->input('name')) == 'root') {
-            $categoryTransalation = new CategoryTranslation();
-
-            $result = $categoryTransalation->where('name', request()->input('name'))->get();
-
-            if(count($result) > 0) {
-                session()->flash('error', trans('admin::app.response.create-root-failure'));
-
-                return redirect()->back();
-            }
-        }
 
         $category = $this->categoryRepository->create(request()->all());
 
@@ -120,9 +101,9 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        $categories = $this->categoryRepository->getCategoryTree($id);
-
         $category = $this->categoryRepository->findOrFail($id);
+
+        $categories = $this->categoryRepository->getCategoryTreeWithoutDescendant($id);
 
         $attributes = $this->attributeRepository->findWhere(['is_filterable' =>  1]);
 
@@ -146,7 +127,7 @@ class CategoryController extends Controller
                 }
             }],
             $locale . '.name' => 'required',
-            'image.*' => 'mimes:jpeg,jpg,bmp,png'
+            'image.*'         => 'mimes:jpeg,jpg,bmp,png',
         ]);
 
         $this->categoryRepository->update(request()->all(), $id);
@@ -170,11 +151,11 @@ class CategoryController extends Controller
             session()->flash('warning', trans('admin::app.response.delete-category-root', ['name' => 'Category']));
         } else {
             try {
-                Event:: fire('catalog.category.delete.before', $id);
+                Event::dispatch('catalog.category.delete.before', $id);
 
                 $this->categoryRepository->delete($id);
 
-                Event::fire('catalog.category.delete.after', $id);
+                Event::dispatch('catalog.category.delete.after', $id);
 
                 session()->flash('success', trans('admin::app.response.delete-success', ['name' => 'Category']));
 
@@ -190,9 +171,10 @@ class CategoryController extends Controller
     /**
      * Remove the specified resources from database
      *
-     * @return response \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response
      */
-    public function massDestroy() {
+    public function massDestroy()
+    {
         $suppressFlash = false;
 
         if (request()->isMethod('delete') || request()->isMethod('post')) {
@@ -200,11 +182,11 @@ class CategoryController extends Controller
 
             foreach ($indexes as $key => $value) {
                 try {
-                    Event::fire('catalog.category.delete.before', $value);
+                    Event::dispatch('catalog.category.delete.before', $value);
 
                     $this->categoryRepository->delete($value);
 
-                    Event::fire('catalog.category.delete.after', $value);
+                    Event::dispatch('catalog.category.delete.after', $value);
                 } catch(\Exception $e) {
                     $suppressFlash = true;
 
@@ -212,10 +194,11 @@ class CategoryController extends Controller
                 }
             }
 
-            if (! $suppressFlash)
+            if (! $suppressFlash) {
                 session()->flash('success', trans('admin::app.datagrid.mass-ops.delete-success'));
-            else
+            } else {
                 session()->flash('info', trans('admin::app.datagrid.mass-ops.partial-action', ['resource' => 'Attribute Family']));
+            }
 
             return redirect()->back();
         } else {

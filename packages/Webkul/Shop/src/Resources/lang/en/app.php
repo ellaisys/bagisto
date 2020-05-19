@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'invalid_vat_format' => 'The given vat id has a wrong format',
     'security-warning' => 'Suspicious activity found!!!',
     'nothing-to-delete' => 'Nothing to delete',
 
@@ -11,7 +12,7 @@ return [
         'reviews' => 'Reviews',
         'wishlist' => 'Wishlist',
         'orders' => 'Orders',
-        'downloadable-products' => 'Downloadable Products',
+        'downloadable-products' => 'Downloadable Products'
     ],
 
     'common' => [
@@ -86,7 +87,7 @@ return [
         'star' => 'Star',
         'percentage' => ':percentage %',
         'id-star' => 'star',
-        'name' => 'Name'
+        'name' => 'Name',
     ],
 
     'customer' => [
@@ -119,16 +120,6 @@ return [
             'verified' => 'Your account has been verified, try to login now.',
             'verify-failed' => 'We cannot verify your mail account.',
             'dont-have-account' => 'You do not have account with us.',
-            'success' => 'Account Created Successfully',
-            'success-verify' => 'Account Created Successfully, an e-mail has been sent for verification.',
-            'success-verify-email-unsent' => 'Account created successfully, but verification e-mail unsent',
-            'failed' => 'Error! Cannot Create Your Account, Try Again Later',
-            'already-verified' => 'Your Account is already verified Or Please Try Sending A New Verification Email Again',
-            'verification-not-sent' => 'Error! Problem In Sending Verification Email, Try Again Later',
-            'verification-sent' => 'Verification Email Sent',
-            'verified' => 'Your Account Has Been Verified, Try To Login Now',
-            'verify-failed' => 'We Cannot Verify Your Mail Account',
-            'dont-have-account' => 'You Do Not Have Account With Us',
             'customer-registration' => 'Customer Registered Successfully'
         ],
 
@@ -186,6 +177,9 @@ return [
                 'fname' => 'First Name',
                 'lname' => 'Last Name',
                 'gender' => 'Gender',
+                'other' => 'Other',
+                'male' => 'Male',
+                'female' => 'Female',
                 'dob' => 'Date Of Birth',
                 'phone' => 'Phone',
                 'email' => 'Email',
@@ -219,6 +213,11 @@ return [
 
                 'create' => [
                     'page-title' => 'Add Address Form',
+                    'company_name' => 'Company name',
+                    'first_name' => 'First name',
+                    'last_name' => 'Last name',
+                    'vat_id' => 'Vat id',
+                    'vat_help_note' => '[Note: Use Country Code with VAT Id. Eg. INV01234567891]',
                     'title' => 'Add Address',
                     'street-address' => 'Street Address',
                     'country' => 'Country',
@@ -234,6 +233,10 @@ return [
 
                 'edit' => [
                     'page-title' => 'Edit Address',
+                    'company_name' => 'Company name',
+                    'first_name' => 'First name',
+                    'last_name' => 'Last name',
+                    'vat_id' => 'Vat id',
                     'title' => 'Edit Address',
                     'street-address' => 'Street Address',
                     'submit' => 'Save Address',
@@ -254,7 +257,14 @@ return [
                     'date' => 'Date',
                     'status' => 'Status',
                     'total' => 'Total',
-                    'order_number' => 'Order Number'
+                    'order_number' => 'Order Number',
+                    'processing' => 'Processing',
+                    'completed' => 'Completed',
+                    'canceled' => 'Canceled',
+                    'closed' => 'Closed',
+                    'pending' => 'Pending',
+                    'pending-payment' => 'Pending Payment',
+                    'fraud' => 'Fraud'
                 ],
 
                 'view' => [
@@ -303,6 +313,8 @@ return [
                     'individual-refund' => 'Refund #:refund_id',
                     'adjustment-refund' => 'Adjustment Refund',
                     'adjustment-fee' => 'Adjustment Fee',
+                    'cancel-btn-title' => 'Cancel',
+                    'tracking-number' => 'Tracking Number',
                 ]
             ],
 
@@ -358,6 +370,7 @@ return [
         'layered-nav-title' => 'Shop By',
         'price-label' => 'As low as',
         'remove-filter-link-title' => 'Clear All',
+        'filter-to' => 'to',
         'sort-by' => 'Sort By',
         'from-a-z' => 'From A-Z',
         'from-z-a' => 'From Z-A',
@@ -400,7 +413,8 @@ return [
         'choose-selection' => 'Choose a selection',
         'your-customization' => 'Your Customization',
         'total-amount' => 'Total Amount',
-        'none' => 'None'
+        'none' => 'None',
+        'available-for-order' => 'Available for Order'
     ],
 
     // 'reviews' => [
@@ -417,7 +431,8 @@ return [
                 'missing_fields' => 'Some required fields missing for this product.',
                 'missing_options' => 'Options are missing for this product.',
                 'missing_links' => 'Downloadable links are missing for this product.',
-                'qty_missing' => 'Atleast one product should have more than 1 quantity.'
+                'qty_missing' => 'Atleast one product should have more than 1 quantity.',
+                'qty_impossible' => 'Cannot add more than one of these products to cart.'
             ],
             'create-error' => 'Encountered some issue while making cart instance.',
             'title' => 'Shopping Cart',
@@ -449,7 +464,10 @@ return [
             'cart-subtotal' => 'Cart Subtotal',
             'cart-remove-action' => 'Do you really want to do this ?',
             'partial-cart-update' => 'Only some of the product(s) were updated',
-            'link-missing' => ''
+            'link-missing' => '',
+            'event' => [
+                'expired' => 'This event has been expired.'
+            ]
         ],
 
         'onepage' => [
@@ -460,6 +478,7 @@ return [
             'complete' => 'Complete',
             'billing-address' => 'Billing Address',
             'sign-in' => 'Sign In',
+            'company-name' => 'Company Name',
             'first-name' => 'First Name',
             'last-name' => 'Last Name',
             'email' => 'Email',
@@ -485,7 +504,7 @@ return [
             'contact' => 'Contact',
             'place-order' => 'Place Order',
             'new-address' => 'Add New Address',
-            'save_as_address' => 'Save as Address',
+            'save_as_address' => 'Save this address',
             'apply-coupon' => 'Apply Coupon',
             'amt-payable' => 'Amount Payable',
             'got' => 'Got',
@@ -554,6 +573,15 @@ return [
             'final-summary' => 'Thanks for showing your interest in our store we will send you tracking number once it shipped',
             'help' => 'If you need any kind of help please contact us at :support_email',
             'thanks' => 'Thanks!',
+            
+            'comment' => [
+                'subject' => 'New comment added to your order',
+                'dear' => 'Dear :customer_name',
+                'final-summary' => 'Thanks for showing your interest in our store',
+                'help' => 'If you need any kind of help please contact us at :support_email',
+                'thanks' => 'Thanks!',
+            ],
+
             'cancel' => [
                 'subject' => 'Order Cancel Confirmation',
                 'heading' => 'Order Cancelled',

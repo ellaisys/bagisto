@@ -58,7 +58,7 @@
                                 {{-- Response fields based on the type of columns to be filtered --}}
                                 <li v-if='stringCondition != null'>
                                     <div class="control-group">
-                                        <input type="text" class="control response-string" placeholder="Value here" v-model="stringValue" />
+                                        <input type="text" class="control response-string" placeholder="{{ __('ui::app.datagrid.value-here') }}" v-model="stringValue" />
                                     </div>
                                 </li>
 
@@ -79,7 +79,7 @@
 
                                 <li v-if='numberCondition != null'>
                                     <div class="control-group">
-                                        <input type="number" class="control response-number" placeholder="Numeric Value here"  v-model="numberValue"/>
+                                        <input type="number" class="control response-number" placeholder="{{ __('ui::app.datagrid.numeric-value-here') }}"  v-model="numberValue"/>
                                     </div>
                                 </li>
 
@@ -297,7 +297,7 @@
                         }
 
                         if (this.type == 'string') {
-                            this.formURL(this.columnOrAlias, this.stringCondition, this.stringValue, label)
+                            this.formURL(this.columnOrAlias, this.stringCondition, encodeURIComponent(this.stringValue), label)
                         } else if (this.type == 'number') {
                             indexConditions = true;
 
@@ -685,7 +685,12 @@
                                 _method : element.getAttribute('data-method')
                             }).then(function(response) {
                                 this.result = response;
-                                location.reload();
+                                
+                                if (response.data.redirect) {
+                                    window.location.href = response.data.redirect;
+                                } else {
+                                    location.reload();
+                                }
                             }).catch(function (error) {
                                 location.reload();
                             });

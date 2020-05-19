@@ -14,10 +14,12 @@ import ImageUpload from './components/image/image-upload';
 import ImageWrapper from './components/image/image-wrapper';
 import ImageItem from './components/image/image-item';
 import Slugify from './directives/slugify';
+import SlugifyTarget from './directives/slugify-target';
 import Code from './directives/code';
 import Alert from './directives/alert';
 import DatetimeComponent from './components/datetime';
 import DateComponent from './components/date';
+import TimeComponent from './components/time';
 import SwatchPicker from './components/swatch-picker';
 import Debounce from './directives/debounce';
 
@@ -35,10 +37,12 @@ Vue.component('image-upload', ImageUpload);
 Vue.component('image-wrapper', ImageWrapper);
 Vue.component('image-item', ImageItem);
 Vue.directive('slugify', Slugify);
+Vue.directive('slugify-target', SlugifyTarget);
 Vue.directive('code', Code);
 Vue.directive('alert', Alert);
 Vue.component('datetime', DatetimeComponent);
 Vue.component('date', DateComponent);
+Vue.component("time-component", TimeComponent);
 Vue.component('swatch-picker', SwatchPicker);
 Vue.directive('debounce', Debounce);
 Vue.filter('truncate', function (value, limit, trail) {

@@ -182,16 +182,22 @@
                 data: function() {
                     return {
                         selected_product: (this.option.type == 'checkbox' || this.option.type == 'multiselect')  ? [] : null,
-                        
+
                         qty_validations: ''
                     }
                 },
 
                 computed: {
                     product_qty: function() {
-                        return this.option.products[this.selected_product]
-                            ? this.option.products[this.selected_product].qty
-                            : 0;
+                        var self = this;
+                        self.qty = 0;
+
+                        self.option.products.forEach(function(product, key){
+                            if (self.selected_product == product.id)
+                                self.qty =  self.option.products[key].qty;
+                        });
+
+                        return self.qty;
                     }
                 },
 

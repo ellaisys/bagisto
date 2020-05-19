@@ -2,46 +2,40 @@
 
 namespace Webkul\Product\Helpers;
 
-/**
- * Toolbar Helper
- *
- * @author Jitendra Singh <jitendra@webkul.com>
- * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
- */
 class Toolbar extends AbstractProduct
 {
     /**
      * Returns available sort orders
      *
-     * @param string $key
-     * @return string
+     * @return array
      */
     public function getAvailableOrders()
     {
         return [
-            'name-asc' => 'from-a-z',
-            'name-desc' => 'from-z-a',
+            'name-asc'        => 'from-a-z',
+            'name-desc'       => 'from-z-a',
             'created_at-desc' => 'newest-first',
-            'created_at-asc' => 'oldest-first',
-            'price-asc' => 'cheapest-first',
-            'price-desc' => 'expensive-first'
+            'created_at-asc'  => 'oldest-first',
+            'price-asc'       => 'cheapest-first',
+            'price-desc'      => 'expensive-first',
         ];
     }
     /**
      * Returns available limits
      *
-     * @param string $key
-     * @return string
+     * @return array
      */
     public function getAvailableLimits()
     {
-        return [9, 15, 21, 28];
+        return core()->getConfigData('catalog.products.storefront.products_per_page')
+               ? explode(',', core()->getConfigData('catalog.products.storefront.products_per_page'))
+               : [9, 15, 21, 28];
     }
 
     /**
      * Returns the sort order url
      *
-     * @param string $key
+     * @param  string $key
      * @return string
      */
     public function getOrderUrl($key)
@@ -49,51 +43,59 @@ class Toolbar extends AbstractProduct
         $keys = explode('-', $key);
 
         return request()->fullUrlWithQuery([
-                'sort' => current($keys),
-                'order' => end($keys)
-            ]);
+            'sort'  => current($keys),
+            'order' => end($keys),
+        ]);
     }
 
     /**
      * Returns the limit url
      *
-     * @param integer $limit
+     * @param  int  $limit
      * @return string
      */
     public function getLimitUrl($limit)
     {
         return request()->fullUrlWithQuery([
-                'limit' => $limit
-            ]);
+            'limit' => $limit,
+        ]);
     }
 
     /**
      * Returns the mode url
      *
-     * @param string $mode
+     * @param  string $mode
      * @return string
      */
     public function getModeUrl($mode)
     {
         return request()->fullUrlWithQuery([
-                'mode' => $mode
-            ]);
+            'mode' => $mode,
+        ]);
     }
 
     /**
      * Checks if sort order is active
      *
-     * @param string $key
-     * @return boolean
+     * @param  string $key
+     * @return bool
      */
     public function isOrderCurrent($key)
     {
         $params = request()->input();
+        $orderDirection = $params['order'] ?? 'asc';
 
-        if (isset($params['sort']) && $key == $params['sort'] . '-' . $params['order'])
+        if (isset($params['sort']) && $key == $params['sort'] . '-' . $orderDirection) {
             return true;
-        else if (! isset($params['sort']) && $key == 'created_at-desc')
-            return true;
+        } elseif (! isset($params['sort'])) {
+            $sortBy = core()->getConfigData('catalog.products.storefront.sort_by')
+                   ? core()->getConfigData('catalog.products.storefront.sort_by')
+                   : 'created_at-asc';
+            
+            if ($key == $sortBy) {
+                return true;
+            }
+        }
 
         return false;
     }
@@ -101,15 +103,16 @@ class Toolbar extends AbstractProduct
     /**
      * Checks if limit is active
      *
-     * @param integer $limit
-     * @return boolean
+     * @param  int  $limit
+     * @return bool
      */
     public function isLimitCurrent($limit)
     {
         $params = request()->input();
 
-        if (isset($params['limit']) && $limit == $params['limit'])
+        if (isset($params['limit']) && $limit == $params['limit']) {
             return true;
+        }
 
         return false;
     }
@@ -117,15 +120,16 @@ class Toolbar extends AbstractProduct
     /**
      * Checks if mode is active
      *
-     * @param string $key
-     * @return boolean
+     * @param  string  $key
+     * @return bool
      */
     public function isModeActive($key)
     {
         $params = request()->input();
 
-        if (isset($params['mode']) && $key == $params['mode'])
+        if (isset($params['mode']) && $key == $params['mode']) {
             return true;
+        }
 
         return false;
     }
@@ -133,16 +137,18 @@ class Toolbar extends AbstractProduct
     /**
      * Returns the current mode
      *
-     * @param string $mode
      * @return string
      */
     public function getCurrentMode()
     {
         $params = request()->input();
 
-        if (isset($params['mode']))
+        if (isset($params['mode'])) {
             return $params['mode'];
+        }
 
-        return 'grid';
+        return core()->getConfigData('catalog.products.storefront.mode')
+               ? core()->getConfigData('catalog.products.storefront.mode')
+               : 'grid';
     }
 }

@@ -21,11 +21,19 @@
                             @foreach ($cart->items as $key => $item)
                                 @php
                                     $productBaseImage = $item->product->getTypeInstance()->getBaseImage($item);
+
+                                    if (is_null ($item->product->url_key)) {
+                                        if (! is_null($item->product->parent)) {
+                                            $url_key = $item->product->parent->url_key;
+                                        }
+                                    } else {
+                                        $url_key = $item->product->url_key;
+                                    }
                                 @endphp
 
                                 <div class="item mt-5">
                                     <div class="item-image" style="margin-right: 15px;">
-                                        <a href="{{ route('shop.productOrCategory.index', $item->product->url_key) }}"><img src="{{ $productBaseImage['medium_image_url'] }}" /></a>
+                                        <a href="{{ route('shop.productOrCategory.index', $url_key) }}"><img src="{{ $productBaseImage['medium_image_url'] }}" /></a>
                                     </div>
 
                                     <div class="item-details">
@@ -33,7 +41,7 @@
                                         {!! view_render_event('bagisto.shop.checkout.cart.item.name.before', ['item' => $item]) !!}
 
                                         <div class="item-title">
-                                            <a href="{{ route('shop.productOrCategory.index', $item->product->url_key) }}">
+                                            <a href="{{ route('shop.productOrCategory.index', $url_key) }}">
                                                 {{ $item->product->name }}
                                             </a>
                                         </div>
@@ -68,10 +76,12 @@
                                         {!! view_render_event('bagisto.shop.checkout.cart.item.quantity.before', ['item' => $item]) !!}
 
                                         <div class="misc">
-                                            <quantity-changer
-                                                :control-name="'qty[{{$item->id}}]'"
-                                                quantity="{{$item->quantity}}">
-                                            </quantity-changer>
+                                            @if ($item->product->getTypeInstance()->showQuantityBox() === true)
+                                                <quantity-changer
+                                                    :control-name="'qty[{{$item->id}}]'"
+                                                    quantity="{{$item->quantity}}">
+                                                </quantity-changer>
+                                            @endif
 
                                             <span class="remove">
                                                 <a href="{{ route('shop.checkout.cart.remove', $item->id) }}" onclick="removeLink('{{ __('shop::app.checkout.cart.cart-remove-action') }}')">{{ __('shop::app.checkout.cart.remove-link') }}</a></span>
@@ -106,9 +116,11 @@
                             <a href="{{ route('shop.home.index') }}" class="link">{{ __('shop::app.checkout.cart.continue-shopping') }}</a>
 
                             <div>
-                                <button type="submit" class="btn btn-lg btn-primary">
+                                @if ($cart->hasProductsWithQuantityBox())
+                                <button type="submit" class="btn btn-lg btn-primary" id="update_cart_button">
                                     {{ __('shop::app.checkout.cart.update-cart') }}
                                 </button>
+                                @endif
 
                                 @if (! cart()->hasError())
                                     <a href="{{ route('shop.checkout.onepage.index') }}" class="btn btn-lg btn-primary">

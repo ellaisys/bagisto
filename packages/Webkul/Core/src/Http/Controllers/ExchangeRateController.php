@@ -6,12 +6,6 @@ use Illuminate\Support\Facades\Event;
 use Webkul\Core\Repositories\ExchangeRateRepository;
 use Webkul\Core\Repositories\CurrencyRepository;
 
-/**
- * ExchangeRate controller
- *
- * @author Jitendra Singh <jitendra@webkul.com>
- * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
- */
 class ExchangeRateController extends Controller
 {
     /**
@@ -23,23 +17,23 @@ class ExchangeRateController extends Controller
 
     /**
      * ExchangeRateRepository instance
-     * 
-     * @var Object
+     *
+     * @var \Webkul\Core\Repositories\ExchangeRateRepository
      */
     protected $exchangeRateRepository;
 
     /**
      * CurrencyRepository object
      *
-     * @var Object
+     * @var \Webkul\Core\Repositories\CurrencyRepository
      */
     protected $currencyRepository;
 
     /**
      * Create a new controller instance.
      *
-     * @param  \Webkul\Core\Repositories\ExchangeRateRepository $exchangeRateRepository
-     * @param  \Webkul\Core\Repositories\CurrencyRepository     $currencyRepository
+     * @param  \Webkul\Core\Repositories\ExchangeRateRepository  $exchangeRateRepository
+     * @param  \Webkul\Core\Repositories\CurrencyRepository  $currencyRepository
      * @return void
      */
     public function __construct(
@@ -73,7 +67,7 @@ class ExchangeRateController extends Controller
      */
     public function create()
     {
-        $currencies = $this->currencyRepository->with('CurrencyExchangeRate')->all();
+        $currencies = $this->currencyRepository->with('exchange_rate')->all();
 
         return view($this->_config['view'], compact('currencies'));
     }
@@ -87,14 +81,14 @@ class ExchangeRateController extends Controller
     {
         $this->validate(request(), [
             'target_currency' => ['required', 'unique:currency_exchange_rates,target_currency'],
-            'rate' => 'required|numeric'
+            'rate'            => 'required|numeric',
         ]);
 
-        Event::fire('core.exchange_rate.create.before');
+        Event::dispatch('core.exchange_rate.create.before');
 
         $exchangeRate = $this->exchangeRateRepository->create(request()->all());
 
-        Event::fire('core.exchange_rate.create.after', $exchangeRate);
+        Event::dispatch('core.exchange_rate.create.after', $exchangeRate);
 
         session()->flash('success', trans('admin::app.settings.exchange_rates.create-success'));
 
@@ -126,14 +120,14 @@ class ExchangeRateController extends Controller
     {
         $this->validate(request(), [
             'target_currency' => ['required', 'unique:currency_exchange_rates,target_currency,' . $id],
-            'rate' => 'required|numeric'
+            'rate'            => 'required|numeric',
         ]);
 
-        Event::fire('core.exchange_rate.update.before', $id);
+        Event::dispatch('core.exchange_rate.update.before', $id);
 
         $exchangeRate = $this->exchangeRateRepository->update(request()->all(), $id);
 
-        Event::fire('core.exchange_rate.update.after', $exchangeRate);
+        Event::dispatch('core.exchange_rate.update.after', $exchangeRate);
 
         session()->flash('success', trans('admin::app.settings.exchange_rates.update-success'));
 
@@ -145,35 +139,17 @@ class ExchangeRateController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateRates($service)
+    public function updateRates()
     {
-        $exchangeService = config('services.exchange-api')[$service];
+        try {
+            app(config('services.exchange-api.' . config('services.exchange-api.default') . '.class'))->updateRates();
 
-        if (is_array($exchangeService)) {
-            if (! array_key_exists('class', $exchangeService)) {
-                return response()->json([
-                    'success' => false,
-                    'rates' => null,
-                    'error' => trans('admin::app.exchange-rate.exchange-class-not-found', [
-                        'service' => $service
-                    ])
-                ], 400);
-            }
-
-            $exchangeServiceInstance = new $exchangeService['class'];
-            $updatedRates = $exchangeServiceInstance->fetchRates();
-
-            return response()->json([
-                'success' => true,
-                'rates' => 'rates'
-            ], 200);
-        } else {
-            return response()->json([
-                'success' => false,
-                'rates' => null,
-                'error' => trans('admin::app.exchange-rate.invalid-config')
-            ], 400);
+            session()->flash('success', trans('admin::app.settings.exchange_rates.update-success'));
+        } catch(\Exception $e) {
+            session()->flash('error', $e->getMessage());
         }
+
+        return redirect()->back();
     }
 
     /**
@@ -190,16 +166,18 @@ class ExchangeRateController extends Controller
             session()->flash('error', trans('admin::app.settings.exchange_rates.last-delete-error'));
         } else {
             try {
-                Event::fire('core.exchange_rate.delete.before', $id);
+                Event::dispatch('core.exchange_rate.delete.before', $id);
 
                 $this->exchangeRateRepository->delete($id);
 
                 session()->flash('success', trans('admin::app.settings.exchange_rates.delete-success'));
 
-                Event::fire('core.exchange_rate.delete.after', $id);
+                Event::dispatch('core.exchange_rate.delete.after', $id);
 
                 return response()->json(['message' => true], 200);
             } catch (\Exception $e) {
+                report($e);
+                
                 session()->flash('error', trans('admin::app.response.delete-error', ['name' => 'Exchange rate']));
             }
         }

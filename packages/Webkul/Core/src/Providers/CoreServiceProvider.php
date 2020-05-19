@@ -2,14 +2,19 @@
 
 namespace Webkul\Core\Providers;
 
+use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Database\Eloquent\Factory as EloquentFactory;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\AliasLoader;
 use Webkul\Core\Core;
+use Webkul\Core\Exceptions\Handler;
 use Webkul\Core\Facades\Core as CoreFacade;
 use Webkul\Core\Models\SliderProxy;
 use Webkul\Core\Observers\SliderObserver;
+use Webkul\Core\Console\Commands\BagistoVersion;
+use Webkul\Core\Console\Commands\Install;
+use Webkul\Core\Console\Commands\ExchangeRateUpdate;
 
 class CoreServiceProvider extends ServiceProvider
 {
@@ -24,6 +29,8 @@ class CoreServiceProvider extends ServiceProvider
 
         $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
 
+        $this->registerEloquentFactoriesFrom(__DIR__ . '/../Database/Factories');
+
         $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'core');
 
         Validator::extend('slug', 'Webkul\Core\Contracts\Validations\Slug@passes');
@@ -36,9 +43,12 @@ class CoreServiceProvider extends ServiceProvider
             dirname(__DIR__) . '/Config/concord.php' => config_path('concord.php'),
         ]);
 
-        SliderProxy::observe(SliderObserver::class);
+        $this->app->bind(
+            ExceptionHandler::class,
+            Handler::class
+        );
 
-        $this->registerEloquentFactoriesFrom(__DIR__ . '/../Database/Factories');
+        SliderProxy::observe(SliderObserver::class);
     }
 
     /**
@@ -49,7 +59,10 @@ class CoreServiceProvider extends ServiceProvider
     public function register()
     {
         $this->registerFacades();
+
+        $this->registerCommands();
     }
+
     /**
      * Register Bouncer as a singleton.
      *
@@ -66,9 +79,22 @@ class CoreServiceProvider extends ServiceProvider
     }
 
     /**
+     * Register the console commands of this package
+     *
+     * @return void
+     */
+    protected function registerCommands(): void
+    {
+        if ($this->app->runningInConsole()) {
+            $this->commands([BagistoVersion::class, Install::class, ExchangeRateUpdate::class]);
+        }
+    }
+
+    /**
      * Register factories.
      *
-     * @param  string  $path
+     * @param string $path
+     *
      * @return void
      */
     protected function registerEloquentFactoriesFrom($path): void

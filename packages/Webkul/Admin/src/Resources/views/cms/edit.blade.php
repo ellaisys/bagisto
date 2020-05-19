@@ -13,7 +13,7 @@
             <div class="page-header">
                 <div class="page-title">
                     <h1>
-                        <i class="icon angle-left-icon back-link" @click="redirectBack('{{ url('/admin/dashboard') }}')"></i>
+                        <i class="icon angle-left-icon back-link" onclick="history.length > 1 ? history.go(-1) : window.location = '{{ url('/admin/dashboard') }}';"></i>
 
                         {{ __('admin::app.cms.pages.edit-title') }}
                     </h1>
@@ -77,9 +77,7 @@
                             <div class="control-group" :class="[errors.has('{{$locale}}[html_content]') ? 'has-error' : '']">
                                 <label for="html_content" class="required">{{ __('admin::app.cms.pages.content') }}</label>
 
-                                <textarea type="text" class="control" id="content" name="{{$locale}}[html_content]" v-validate="'required'" data-vv-as="&quot;{{ __('admin::app.cms.pages.content') }}&quot;">
-                                    {{ old($locale)['html_content'] ?? ($page->translate($locale)['html_content'] ?? '') }}
-                                </textarea>
+                                <textarea type="text" class="control" id="content" name="{{$locale}}[html_content]" v-validate="'required'" data-vv-as="&quot;{{ __('admin::app.cms.pages.content') }}&quot;">{{ old($locale)['html_content'] ?? ($page->translate($locale)['html_content'] ?? '') }}</textarea>
 
                                 <span class="control-error" v-if="errors.has('{{$locale}}[html_content]')">@{{ errors.first('{!!$locale!!}[html_content]') }}</span>
                             </div>
@@ -105,17 +103,15 @@
                             <div class="control-group">
                                 <label for="meta_keywords">{{ __('admin::app.cms.pages.meta_keywords') }}</label>
 
-                                <textarea type="text" class="control" name="{{$locale}}[meta_keywords]">
-                                    {{ old($locale)['meta_keywords'] ?? ($page->translate($locale)['meta_keywords'] ?? '') }}
-                                </textarea>
+                                <textarea type="text" class="control" name="{{$locale}}[meta_keywords]">{{ old($locale)['meta_keywords'] ?? ($page->translate($locale)['meta_keywords'] ?? '') }}</textarea>
+
                             </div>
 
                             <div class="control-group">
                                 <label for="meta_description">{{ __('admin::app.cms.pages.meta_description') }}</label>
 
-                                <textarea type="text" class="control" name="{{$locale}}[meta_description]">
-                                    {{ old($locale)['meta_description'] ?? ($page->translate($locale)['meta_description'] ?? '') }}
-                                </textarea>
+                                <textarea type="text" class="control" name="{{$locale}}[meta_description]">{{ old($locale)['meta_description'] ?? ($page->translate($locale)['meta_description'] ?? '') }}</textarea>
+
                             </div>
                         </div>
                     </accordian>

@@ -77,19 +77,23 @@
                                 @foreach ($customAttributes as $attribute)
 
                                     <?php
-                                    $validations = [];
+                                        if ($attribute->code == 'guest_checkout' && ! core()->getConfigData('catalog.products.guest-checkout.allow-guest-checkout')) {
+                                            continue;
+                                        }
 
-                                    if ($attribute->is_required) {
-                                        array_push($validations, 'required');
-                                    }
+                                        $validations = [];
 
-                                    if ($attribute->type == 'price') {
-                                        array_push($validations, 'decimal');
-                                    }
+                                        if ($attribute->is_required) {
+                                            array_push($validations, 'required');
+                                        }
 
-                                    array_push($validations, $attribute->validation);
+                                        if ($attribute->type == 'price') {
+                                            array_push($validations, 'decimal');
+                                        }
 
-                                    $validations = implode('|', array_filter($validations));
+                                        array_push($validations, $attribute->validation);
+
+                                        $validations = implode('|', array_filter($validations));
                                     ?>
 
                                     @if (view()->exists($typeView = 'admin::catalog.products.field-types.' . $attribute->type))

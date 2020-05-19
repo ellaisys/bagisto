@@ -187,6 +187,8 @@ Route::group(['middleware' => ['web']], function () {
                     'view' => 'admin::sales.orders.cancel'
                 ])->name('admin.sales.orders.cancel');
 
+                Route::post('/orders/create/{order_id}', 'Webkul\Admin\Http\Controllers\Sales\OrderController@comment')->name('admin.sales.orders.comment');
+
 
                 // Sales Invoices Routes
                 Route::get('/invoices', 'Webkul\Admin\Http\Controllers\Sales\InvoiceController@index')->defaults('_config', [
@@ -408,9 +410,13 @@ Route::group(['middleware' => ['web']], function () {
             //delete backend user
             Route::post('/users/delete/{id}', 'Webkul\User\Http\Controllers\UserController@destroy')->name('admin.users.delete');
 
-            Route::post('/confirm/destroy', 'Webkul\User\Http\Controllers\UserController@destroySelf')->defaults('_config', [
+            Route::get('/users/confirm/{id}', 'Webkul\User\Http\Controllers\UserController@confirm')->defaults('_config', [
+                'view' => 'admin::customers.confirm-password'
+            ])->name('super.users.confirm');
+
+            Route::post('/users/confirm/{id}', 'Webkul\User\Http\Controllers\UserController@destroySelf')->defaults('_config', [
                 'redirect' => 'admin.users.index'
-            ])->name('admin.users.confirm.destroy');
+            ])->name('admin.users.destroy');
 
             // User Role Routes
             Route::get('/roles', 'Webkul\User\Http\Controllers\RoleController@index')->defaults('_config', [
@@ -503,7 +509,7 @@ Route::group(['middleware' => ['web']], function () {
                 'view' => 'admin::settings.exchange_rates.edit'
             ])->name('admin.exchange_rates.edit');
 
-            Route::get('/exchange_rates/update-rates/{service}', 'Webkul\Core\Http\Controllers\ExchangeRateController@updateRates')->name('admin.exchange_rates.update-rates');
+            Route::get('/exchange_rates/update-rates', 'Webkul\Core\Http\Controllers\ExchangeRateController@updateRates')->name('admin.exchange_rates.update_rates');
 
             Route::put('/exchange_rates/edit/{id}', 'Webkul\Core\Http\Controllers\ExchangeRateController@update')->defaults('_config', [
                 'redirect' => 'admin.exchange_rates.index'
@@ -754,12 +760,6 @@ Route::group(['middleware' => ['web']], function () {
                 // Route::post('/delete/{id}', 'Webkul\CMS\Http\Controllers\Admin\PageController@delete')->defaults('_config', [
                 //     'redirect' => 'admin.cms.index'
                 // ])->name('admin.cms.delete');
-            });
-
-            // Development settings
-            Route::prefix('development')->group(function () {
-                Route::get('/', 'Webkul\Admin\Http\Controllers\Development\DashboardController@index')
-                    ->name('admin.development.index');
             });
         });
     });

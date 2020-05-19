@@ -10,49 +10,44 @@ use Webkul\Product\Repositories\ProductRepository;
 class ProductsCategoriesProxyController extends Controller
 {
     /**
-     * Contains route related configuration
-     *
-     * @var array
-     */
-    protected $_config;
-
-    /**
      * CategoryRepository object
      *
-     * @var CategoryRepository
+     * @var \Webkul\Category\Repositories\CategoryRepository
      */
     protected $categoryRepository;
 
     /**
      * ProductRepository object
      *
-     * @var ProductRepository
+     * @var \Webkul\Product\Repositories\ProductRepository
      */
     protected $productRepository;
 
     /**
      * Create a new controller instance.
      *
-     * @param CategoryRepository $categoryRepository
-     * @param ProductRepository  $productRepository
+     * @param  \Webkul\Category\Repositories\CategoryRepository  $categoryRepository
+     * @param  \Webkul\Product\Repositories\ProductRepository  $productRepository
      *
      * @return void
      */
-    public function __construct(CategoryRepository $categoryRepository, ProductRepository $productRepository)
+    public function __construct(
+        CategoryRepository $categoryRepository,
+        ProductRepository $productRepository
+    )
     {
         $this->categoryRepository = $categoryRepository;
+
         $this->productRepository = $productRepository;
 
-        $this->_config = request('_config');
+        parent::__construct();
     }
 
     /**
-     * Show product or category view. If neither category nor product matches,
-     * abort with code 404.
+     * Show product or category view. If neither category nor product matches, abort with code 404.
      *
-     * @param Request $request
-     *
-     * @return \Illuminate\View\View
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\View\View|\Exception
      */
     public function index(Request $request)
     {

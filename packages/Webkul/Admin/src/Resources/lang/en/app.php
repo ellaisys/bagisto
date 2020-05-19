@@ -42,6 +42,7 @@ return [
     ],
 
     'layouts' => [
+        'app-version' => 'Version : :version',
         'my-account' => 'My Account',
         'logout' => 'Logout',
         'visit-shop' => 'Visit Shop',
@@ -139,9 +140,9 @@ return [
     'datagrid' => [
         'mass-ops' => [
             'method-error' => 'Error! Wrong method detected, please check mass action configuration',
-            'delete-success' => 'Selected index of :resource were successfully deleted',
+            'delete-success' => 'Selected :resource were successfully deleted',
             'partial-action' => 'Some actions were not performed due restricted system constraints on :resource',
-            'update-success' => 'Selected index of :resource were successfully updated',
+            'update-success' => 'Selected :resource were successfully updated',
             'no-resource' => 'The resource provided for insufficient for the action'
         ],
 
@@ -209,11 +210,21 @@ return [
         'end' => 'End',
         'active' => 'Active',
         'inactive' => 'Inactive',
+        'true' => 'True',
+        'false' => 'False',
+        'approved' => 'Approved',
+        'pending' => 'Pending',
+        'disapproved' => 'Disapproved',
         'coupon-code' => 'Coupon Code',
         'times-used' => 'Times Used',
         'created-date' => 'Created Date',
         'expiration-date' => 'Expiration Date',
-        'delete' => 'Delete'
+        'edit' => 'Edit',
+        'delete' => 'Delete',
+        'view' => 'View',
+        'rtl' => 'RTL',
+        'ltr' => 'LTR',
+        'update-status' => 'Update Status'
     ],
 
     'account' => [
@@ -312,6 +323,13 @@ return [
             'order-info' => 'Order Information',
             'order-date' => 'Order Date',
             'order-status' => 'Order Status',
+            'order-status-canceled' => 'Canceled',
+            'order-status-closed' => 'Closed',
+            'order-status-fraud' => 'Fraud',
+            'order-status-pending' => 'Pending',
+            'order-status-pending-payment' => 'Pending Payment',
+            'order-status-processing' => 'Processing',
+            'order-status-success' => 'Completed',
             'channel' => 'Channel',
             'customer-name' => 'Customer Name',
             'email' => 'Email',
@@ -334,7 +352,7 @@ return [
             'item-status' => 'Item Status',
             'item-ordered' => 'Ordered (:qty_ordered)',
             'item-invoice' => 'Invoiced (:qty_invoiced)',
-            'item-shipped' => 'shipped (:qty_shipped)',
+            'item-shipped' => 'Shipped (:qty_shipped)',
             'item-canceled' => 'Canceled (:qty_canceled)',
             'item-refunded' => 'Refunded (:qty_refunded)',
             'price' => 'Price',
@@ -353,7 +371,13 @@ return [
             'total-due' => 'Total Due',
             'cancel-confirm-msg' => 'Are you sure you want to cancel this order ?',
             'refund-btn-title' => 'Refund',
-            'refunds' => 'Refunds'
+            'refunds' => 'Refunds',
+            'comment-added-success' => 'Comment addded successfully.',
+            'comment' => 'Comment',
+            'submit-comment' => 'Submit Comment',
+            'notify-customer' => 'Notify Customer',
+            'customer-notified' => ':date | Customer <b>Notified</b>',
+            'customer-not-notified' => ':date | Customer <b>Not Notified</b>'
         ],
 
         'invoices' => [
@@ -392,6 +416,7 @@ return [
             'add-title' => 'Create Shipment',
             'save-btn-title' => 'Save Shipment',
             'qty-ordered' => 'Qty Ordered',
+            'qty-invoiced' => 'Qty Invoiced',
             'qty-to-ship' => 'Qty to Ship',
             'available-sources' => 'Available Sources',
             'source' => 'Source',
@@ -418,7 +443,7 @@ return [
             'adjustment-refund' => 'Adjustment Refund',
             'adjustment-fee' => 'Adjustment Fee',
             'update-qty' => 'Update Quantities',
-            'invalid-qty' => 'Found invalid quantity for return items.',
+            'invalid-qty' => 'We found an invalid quantity to refund items.',
             'refund-limit-error' => 'The most money available to refund is :amount.',
             'refunded' => 'Refunded',
             'date' => 'Refund Date',
@@ -462,8 +487,8 @@ return [
             'add-variant-title' => 'Add Variant',
             'variant-already-exist-message' => 'Variant with same attribute options already exists.',
             'add-image-btn-title' => 'Add Image',
-            'mass-delete-success' => 'All the selected index of products have been deleted successfully',
-            'mass-update-success' => 'All the selected index of products have been updated successfully',
+            'mass-delete-success' => 'All the selected products have been deleted successfully',
+            'mass-update-success' => 'All the selected products have been updated successfully',
             'configurable-error' => 'Please select atleast one configurable attribute.',
             'categories' => 'Categories',
             'images' => 'Images',
@@ -555,6 +580,7 @@ return [
             'file' => 'File',
             'checkbox' => 'Checkbox',
             'use_in_flat' => "Create in Product Flat Table",
+            'is_comparable' => "Attribute is comparable",
             'default_null_option' => 'Create default empty option',
         ],
         'families' => [
@@ -710,7 +736,7 @@ return [
             'target_currency' => 'Target Currency',
             'rate' => 'Rate',
             'exchange-class-not-found' => ':service exchange rate class not found',
-            'update-rates' => 'Update rates using :service',
+            'update-rates' => 'Update Rates',
             'create-success' => 'Exchange Rate created successfully.',
             'update-success' => 'Exchange Rate updated successfully.',
             'delete-success' => 'Exchange Rate deleted successfully.',
@@ -776,7 +802,8 @@ return [
             'seo' => 'Home page SEO',
             'seo-title' => 'Meta title',
             'seo-description' => 'Meta description',
-            'seo-keywords' => 'Meta keywords'
+            'seo-keywords' => 'Meta keywords',
+
         ],
 
         'sliders' => [
@@ -867,6 +894,7 @@ return [
 
         'addresses' => [
             'title' => ':customer_name\'s Addresses List',
+            'vat_id' => 'Vat id',
             'create-title' => 'Create Customer\'s Address',
             'edit-title' => 'Update Customer\'s Address',
             'title-orders' => ':customer_name\'s Orders List',
@@ -917,17 +945,19 @@ return [
             'state' => 'State',
             'select-state' => 'Select a region, state or province.',
             'country' => 'Country',
+            'other' => 'Other',
             'male' => 'Male',
             'female' => 'Female',
             'phone' => 'Phone',
             'group-default' => 'Cannot delete the default group.',
             'edit-help-title' => 'Edit Customer',
             'delete-help-title' => 'Delete Customer',
+            'addresses' => 'Addresses',
             'mass-destroy-success' => 'Customers deleted successfully',
             'mass-update-success' => 'Customers updated successfully',
             'status' => 'Status',
             'active' => 'Active',
-            'in-active' => 'Inactive'
+            'inactive' => 'Inactive'
         ],
 
         'reviews' => [
@@ -1032,7 +1062,7 @@ return [
             'code-suffix' => 'Code Suffix',
             'generate' => 'Generate',
             'cart-rule-not-defind-error' => 'Cart rule is not defined',
-            'mass-delete-success' => 'All the selected index of coupons have been deleted successfully.',
+            'mass-delete-success' => 'All the selected coupons have been deleted successfully.',
             'end-other-rules' => 'End Other Rules',
             'children-categories' => 'Categories (Children Only)',
             'parent-categories' => 'Categories (Parent Only)',
@@ -1199,9 +1229,29 @@ return [
     ],
 
     'admin' => [
+        'emails' => [
+            'email' => 'Email',
+            'notification_label' => 'Notifications',
+            'notifications' => [
+                'verification' => 'Send verification E-mail',
+                'registration' => 'Send registration E-mail',
+                'customer' => 'Send customer E-mail',
+                'new-order' => 'Send Order Confirmation E-mail',
+                'new-admin' => 'Send Admin Invitation E-mail',
+                'new-invoice' => 'Send Invoice Confirmation E-mail',
+                'new-refund' => 'Send Refund Notification E-mail',
+                'new-shipment' => 'Send Shipment Notification E-mail',
+                'new-inventory-source' => 'Send Inventory Source Notification E-mail',
+                'cancel-order' => 'Send cancel Order Notification E-mail',
+            ],
+
+        ],
         'system' => [
             'catalog' => 'Catalog',
             'products' => 'Products',
+            'guest-checkout' => 'Guest Checkout',
+            'allow-guest-checkout' => 'Allow Guest Checkout',
+            'allow-guest-checkout-hint' => 'Hint: If turned on, this option can be configured for each product specifically.',
             'review' => 'Review',
             'allow-guest-review' => 'Allow Guest Review',
             'inventory' => 'Inventory',
@@ -1244,6 +1294,11 @@ return [
             'footer-toggle' => 'Toggle footer',
             'locale-options' => 'Unit Options',
             'weight-unit' => 'Weight Unit',
+            'email-settings'    => 'Email Settings',
+            'email-sender-name' => 'Email Sender Name',
+            'shop-email-from'   => 'Shop Email Address [For sending emails]',
+            'admin-name'    => 'Admin Name',
+            'admin-email' => 'Admin Email',
             'admin-page-limit' => 'Default Items Per Page (Admin)',
             'design' => 'Design',
             'admin-logo' => 'Admin Logo',
@@ -1257,7 +1312,40 @@ return [
             'order-number-length' => 'Order Number Length',
             'order-number-suffix' => 'Order Number Suffix',
             'default' => 'Default',
-            'sandbox' => 'Sandbox'
-        ]
+            'sandbox' => 'Sandbox',
+            'all-channels' => 'All Channels',
+            'all-locales' => 'All Locales',
+            'all-customer-groups' => 'All Customer groups',
+            'invoice-slip-design' => 'Invoice Slip Design',
+            'logo' => 'Logo',
+            'storefront' => 'Storefront',
+            'default-list-mode' => 'Default List Mode',
+            'grid' => 'Grid',
+            'list' => 'List',
+            'products-per-page' => 'Products Per Page',
+            'sort-by' => 'Sort By',
+            'from-z-a' => 'From Z-A',
+            'from-a-z' => 'From A-Z',
+            'newest-first' => 'Newest First',
+            'oldest-first' => 'Oldest First',
+            'cheapest-first' => 'Cheapest First',
+            'expensive-first' => 'Expensive First',
+            'comma-seperated' => 'Comma Seperated',
+            'favicon' => 'Favicon',
+            'seo' => 'SEO',
+            'rich-snippets' => 'Rich Snippets',
+            'products' => 'Products',
+            'enable' => 'Enable',
+            'show-weight' => 'Show Weight',
+            'show-categories' => 'Show Categories',
+            'show-images' => 'Show Images',
+            'show-reviews' => 'Show Reviews',
+            'show-ratings' => 'Show Ratings',
+            'show-offers' => 'Show Offers',
+            'show-sku' => 'Show SKU',
+            'categories' => 'Categories',
+            'show-sku' => 'Show SKU',
+            'show-search-input-field' => 'Show Search Input Field'
+       ]
     ]
 ];
