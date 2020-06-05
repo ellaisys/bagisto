@@ -314,7 +314,8 @@ return [
                     'adjustment-refund' => 'Rimborso',
                     'adjustment-fee' => 'Commissione di rimborso',
                     'cancel-btn-title' => 'Cancella',
-                    'tracking-number' => 'Tracking Number'
+                    'tracking-number' => 'Tracking Number',
+                    'cancel-confirm-msg' => 'Sei sicuro di voler annullare questo ordine ?'
                 ]
             ],
 
@@ -394,6 +395,7 @@ return [
         'new' => 'Nuovo',
         'empty' => 'Nessun prodotto disponibile in questa categoria',
         'add-to-cart' => 'Aggiungi al Carrello',
+        'book-now' => 'Prenota ora',
         'buy-now' => 'Compra ora',
         'whoops' => 'Whoops!',
         'quantity' => 'Quantità',
@@ -475,6 +477,7 @@ return [
             'shipping' => 'Spedizione',
             'payment' => 'Pagamento',
             'complete' => 'Completo',
+            'review' => 'Revisione',
             'billing-address' => 'Indirizzo Fatturazione',
             'sign-in' => 'Login',
             'company-name' => 'Azienda',

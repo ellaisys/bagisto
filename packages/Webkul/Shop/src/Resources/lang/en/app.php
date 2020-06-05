@@ -315,6 +315,7 @@ return [
                     'adjustment-fee' => 'Adjustment Fee',
                     'cancel-btn-title' => 'Cancel',
                     'tracking-number' => 'Tracking Number',
+                    'cancel-confirm-msg' => 'Are you sure you want to cancel this order ?'
                 ]
             ],
 
@@ -395,6 +396,7 @@ return [
         'new' => 'New',
         'empty' => 'No products available in this category',
         'add-to-cart' => 'Add To Cart',
+        'book-now' => 'Book Now',
         'buy-now' => 'Buy Now',
         'whoops' => 'Whoops!',
         'quantity' => 'Quantity',
@@ -476,6 +478,7 @@ return [
             'shipping' => 'Shipping',
             'payment' => 'Payment',
             'complete' => 'Complete',
+            'review' => 'Review',
             'billing-address' => 'Billing Address',
             'sign-in' => 'Sign In',
             'company-name' => 'Company Name',

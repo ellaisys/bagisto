@@ -318,7 +318,8 @@ return [
                     'individual-refund' => 'Terugbetaling #:refund_id',
                     'adjustment-refund' => 'Aanpassing restitutie',
                     'adjustment-fee' => 'Aanpassingskosten',
-                    'tracking-number' => 'Tracking Number',
+                    'tracking-number' => 'Volg nummer',
+                    'cancel-confirm-msg' => 'Weet u zeker dat u deze bestelling wilt annuleren ?'
                 ]
             ],
 
@@ -399,6 +400,7 @@ return [
         'new' => 'Nieuw',
         'empty' => 'Geen producten beschikbaar in deze categorie',
         'add-to-cart' => 'Voeg toe aan winkelkar',
+        'book-now' => 'boek nu',
         'buy-now' => 'Koop nu',
         'whoops' => 'Whoops!',
         'quantity' => 'Aantal',
@@ -480,6 +482,7 @@ return [
             'shipping' => 'Verzending',
             'payment' => 'Betaling',
             'complete' => 'Complete',
+            'review' => 'Beoordeling',
             'billing-address' => 'Factuur adres',
             'sign-in' => 'Inloggen',
             'company-name' => 'Bedrijfsnaam',

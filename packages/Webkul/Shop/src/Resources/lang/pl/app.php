@@ -313,7 +313,8 @@ return [
                     'adjustment-refund' => 'Wyrównania kosztów zwrotu',
                     'adjustment-fee' => 'Opłata za dostosowanie',
                     'cancel-btn-title' => 'Anuluj',
-                    'tracking-number' => 'Tracking Number',
+                    'tracking-number' => 'numer przesyłki',
+                    'cancel-confirm-msg' => 'Czy na pewno chcesz anulować to zamówienie ?'
                 ]
             ],
 
@@ -387,12 +388,13 @@ return [
         'related-product-title' => 'Powiązane produkty ',
         'cross-sell-title' => 'Więcej opcji',
         'reviews-title' => 'Oceny i recenzje',
-        'write-review-btn' => ''Napisz recenzję',
+        'write-review-btn' => 'Napisz recenzję',
         'choose-option' => 'Wybierz opcję',
         'sale' => 'Wyprzedaż',
         'new' => 'Nowość',
         'empty' => 'Brak produktów w tej kategorii',
         'add-to-cart' => 'Dodaj do koszyka',
+        'book-now' => 'Rezerwuj teraz',
         'buy-now' => 'Kup teraz',
         'whoops' => 'Whoops!',
         'quantity' => 'Ilość',
@@ -473,6 +475,7 @@ return [
             'shipping' => 'Wysyłka',
             'payment' => 'Płatność',
             'complete' => 'Kompletna',
+            'review' => 'Przejrzeć',
             'billing-address' => 'Adres rozliczeniowy',
             'sign-in' => 'Zaloguj się',
             'company-name' => 'Nazwa firmy',

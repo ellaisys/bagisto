@@ -314,6 +314,7 @@ return [
                     'adjustment-refund' => 'بازپرداخت تنظیم',
                     'adjustment-fee' => 'هزینه تنظیم',
                     'tracking-number' => 'Tracking Number',
+                    'cancel-confirm-msg' => 'Are you sure you want to cancel this order ?'
                 ]
             ],
 
@@ -394,6 +395,7 @@ return [
         'new' => 'جدید',
         'empty' => 'هیچ کالایی در این گروه موجود نیست',
         'add-to-cart' => 'افزودن به سبد خرید',
+        'book-now' => 'اکنون ثبت کن',
         'buy-now' => 'هم اکنون خریداری کنید',
         'whoops' => 'وای!',
         'quantity' => 'مقدار',
@@ -475,6 +477,7 @@ return [
             'shipping' => 'حمل دریایی',
             'payment' => 'پرداخت',
             'complete' => 'تکمیل',
+            'review' => 'مرور',
             'billing-address' => 'آدرس قبض',
             'sign-in' => 'ورود',
             'company-name' => 'نام شرکت',

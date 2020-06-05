@@ -293,7 +293,8 @@ return [
                     'individual-refund' => '返金 #:refund_id',
                     'adjustment-refund' => '返金調整',
                     'adjustment-fee' => '調整手数料',
-                    'tracking-number' => 'Tracking Number',
+                    'tracking-number' => '追跡番号',
+                    'cancel-confirm-msg' => 'この注文をキャンセルしてもよろしいですか ?'
                 ]
             ],
 
@@ -372,6 +373,7 @@ return [
         'new' => 'new',
         'empty' => 'このカテゴリーにアイテムがありません。',
         'add-to-cart' => 'カートに追加する',
+        'book-now' => '今予約する',
         'buy-now' => '今すぐ購入',
         'whoops' => 'すみません！',
         'quantity' => '数量',
@@ -434,6 +436,7 @@ return [
             'shipping' => '発送',
             'payment' => '支払い',
             'complete' => '完了',
+            'review' => 'レビュー',
             'billing-address' => '領収書宛先',
             'sign-in' => 'ログイン',
             'first-name' => '名',

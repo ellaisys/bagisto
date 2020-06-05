@@ -297,6 +297,7 @@ return [
                     'ship-to' => 'Envío a',
                     'contact' => 'Contacto',
                     'tracking-number' => 'Tracking Number',
+                    'cancel-confirm-msg' => 'Estás segura de que deseas cancelar este pedido ?'
                 ]
             ],
 
@@ -376,6 +377,7 @@ return [
         'new' => 'Nuevo',
         'empty' => 'No hay prodcutos disponibles en esta categoría',
         'add-to-cart' => 'Añadir a la cesta',
+        'book-now' => 'reservar ahora',
         'buy-now' => 'Comprar ahora',
         'whoops' => 'Ups!',
         'quantity' => 'Cantidad',
@@ -442,6 +444,7 @@ return [
             'shipping' => 'Envío',
             'payment' => 'Pago',
             'complete' => 'Completado',
+            'review' => 'revisión',
             'billing-address' => 'Dirección de facturación',
             'sign-in' => 'Entrar',
             'first-name' => 'Nombre',

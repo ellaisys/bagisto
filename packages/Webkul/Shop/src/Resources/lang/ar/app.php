@@ -313,7 +313,9 @@ return [
                     'individual-refund' => '#:refund_id مسترجع',
                     'adjustment-refund' => 'تعديلات عملية الإسترجاع',
                     'adjustment-fee' => 'تكلفة تعديلات عملية الإسترجاع',
+                    'cancel-confirm-msg' => 'هل أنت متأكد من أنك تريد إلغاء هذا الطلب ؟',
                     'tracking-number' => 'Tracking Number',
+                    'cancel-confirm-msg' => 'هل أنت متأكد أنك تريد إلغاء هذا الطلب ?'
                 ]
             ],
 
@@ -394,6 +396,7 @@ return [
         'new' => 'جديد',
         'empty' => 'لا توجد منتجات متاحة في هذه الفئة',
         'add-to-cart' => 'أضف إلى العربة',
+        'book-now' => 'احجز الآن',
         'buy-now' => 'اشتر الآن',
         'whoops' => 'خطأ!',
         'quantity' => 'الكمية',
@@ -475,6 +478,7 @@ return [
             'shipping' => 'الشحن',
             'payment' => 'الدفع',
             'complete' => 'اكتمل',
+            'review' => 'مراجعة',
             'billing-address' => 'عنوان الفواتير',
             'sign-in' => 'تسجيل الدخول',
             'first-name' => 'الاسم الأول',
